@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Models
 {
-    internal class Author
+    public class Author
     {
         [Key]
         public int Id { get; set; }
