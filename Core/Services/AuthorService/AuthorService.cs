@@ -10,20 +10,24 @@ namespace Core.Services.AuthorService
 {
     public class AuthorService
     {
-        private readonly AuthorRepository _repository;
-        public AuthorService(AuthorRepository authorRepository) 
+        private readonly IAuthorRepository _authorRepository;
+        public AuthorService(IAuthorRepository authorRepository) 
         {
-            _repository = authorRepository;
+            _authorRepository = authorRepository;
         }
 
         public async Task<IEnumerable<Author>> GetAllAuthors()
         {
-            return await _repository.GetAll();
+            return await _authorRepository.GetAll();
         }
 
         public async Task CreateAuthor(Author author)
         {
-            await _repository.Create(author);
+            await _authorRepository.Create(author);
+        }
+        public async Task GetAuthorById(int id)
+        {
+            await _authorRepository.GetById(id);
         }
     }
 }
