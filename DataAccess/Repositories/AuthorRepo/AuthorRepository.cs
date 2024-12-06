@@ -36,9 +36,7 @@ namespace DataAccess.Repositories.AuthorRepo
 
         public async Task<Author> GetById(int id)
         {
-            var data = await _context.Author.FindAsync(id);
-            return data;
-
+            return await _context.Author.FindAsync(id);
         }
 
         public async Task Update(Author author)

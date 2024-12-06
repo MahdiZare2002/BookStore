@@ -25,9 +25,9 @@ namespace Core.Services.AuthorService
         {
             await _authorRepository.Create(author);
         }
-        public async Task GetAuthorById(int id)
+        public async Task<Author> GetAuthorById(int id)
         {
-            await _authorRepository.GetById(id);
+            return await _authorRepository.GetById(id);
         }
 
         public async Task UpdateAuthor(Author author)

@@ -26,25 +26,24 @@ namespace BookStoreAdmin.Controllers
             return View(await _authorService.GetAllAuthors());
         }
 
-        // GET: Author/Details/5
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        //GET: Author/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //    var author = await _context.Author
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (author == null)
-        //    {
-        //        return NotFound();
-        //    }
+            var author = await _authorService.GetAuthorById(id.Value);
+            if (author == null)
+            {
+                return NotFound();
+            }
 
-        //    return View(author);
-        //}
+            return View(author);
+        }
 
-        // GET: Author/Create
+        //GET: Author/Create
         public IActionResult Create()
         {
             return View();
@@ -73,7 +72,7 @@ namespace BookStoreAdmin.Controllers
                 return NotFound();
             }
 
-            var author = _authorService.GetAuthorById(id.Value);
+            var author = await _authorService.GetAuthorById(id.Value);
             if (author == null)
             {
                 return NotFound();
@@ -81,77 +80,58 @@ namespace BookStoreAdmin.Controllers
             return View(author);
         }
 
-        //// POST: Author/Edit/5
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Author author)
-        //{
-        //    if (id != author.Id)
-        //    {
-        //        return NotFound();
-        //    }
+        // POST: Author/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Author author)
+        {
+            if (id != author.Id)
+            {
+                return NotFound();
+            }
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(author);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!AuthorExists(author.Id))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(author);
-        //}
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _authorService.UpdateAuthor(author);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                       throw;
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(author);
+        }
 
-        //// GET: Author/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        // GET: Author/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //    var author = await _context.Author
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (author == null)
-        //    {
-        //        return NotFound();
-        //    }
+            var author = await _authorService.GetAuthorById(id.Value);
+            if (author == null)
+            {
+                return NotFound();
+            }
 
-        //    return View(author);
-        //}
+            return View(author);
+        }
 
-        //// POST: Author/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    var author = await _context.Author.FindAsync(id);
-        //    if (author != null)
-        //    {
-        //        _context.Author.Remove(author);
-        //    }
-
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
-
-        //private bool AuthorExists(int id)
-        //{
-        //    return _context.Author.Any(e => e.Id == id);
-        //}
+        // POST: Author/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var author = await _authorService.GetAuthorById(id);
+            await _authorService.DeleteAuthor(author);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
