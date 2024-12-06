@@ -66,14 +66,14 @@ namespace BookStoreAdmin.Controllers
         }
 
         // GET: Author/Edit/5
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var author = _authorService.GetAuthorById(id);
+            var author = _authorService.GetAuthorById(id.Value);
             if (author == null)
             {
                 return NotFound();

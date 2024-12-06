@@ -29,5 +29,15 @@ namespace Core.Services.AuthorService
         {
             await _authorRepository.GetById(id);
         }
+
+        public async Task UpdateAuthor(Author author)
+        {
+            await _authorRepository.Update(author);
+        }
+
+        public async Task DeleteAuthor(Author author)
+        {
+            await _authorRepository.Delete(author);
+        }
     }
 }
