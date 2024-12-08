@@ -9,6 +9,7 @@ using DataAccess.Data;
 using DataAccess.Models;
 using Core.Services.BookService;
 using Core.Services.AuthorService;
+using Core.DtoModels;
 
 namespace BookStoreAdmin.Controllers
 {
@@ -61,7 +62,7 @@ namespace BookStoreAdmin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Price,Img,AuthorId,Created,Updated")] Book book)
+        public async Task<IActionResult> Create(BookDto book)
         {
             if (ModelState.IsValid)
             {

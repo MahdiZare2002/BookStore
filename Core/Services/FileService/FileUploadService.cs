@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Core.Services.FileService;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -8,14 +9,15 @@ using System.Threading.Tasks;
 
 namespace Core.Services.FileService
 {
-    public class FileUploadService
+    public class FileUploadService : IFileUploadService
     {
         private readonly string _storagePath;
+
         public FileUploadService(IConfiguration configuration)
         {
             _storagePath = configuration["FileUpload:StoragePath"];
-        }
 
+        }
         public async Task<string> UploadFileAsync(IFormFile file)
         {
             if (!Directory.Exists(_storagePath))

@@ -1,5 +1,6 @@
 using Core.Services.AuthorService;
 using Core.Services.BookService;
+using Core.Services.FileService;
 using DataAccess.Data;
 using DataAccess.Repositories.AuthorRepo;
 using DataAccess.Repositories.BookRepo;
@@ -20,6 +21,8 @@ builder.Services.AddScoped<AuthorService>();
 
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<BookService>();
+
+builder.Services.AddScoped<IFileUploadService, FileUploadService>();
 
 var app = builder.Build();
 

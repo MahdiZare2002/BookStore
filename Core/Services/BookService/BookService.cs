@@ -1,4 +1,6 @@
-﻿using DataAccess.Models;
+﻿using Core.DtoModels;
+using Core.Services.FileService;
+using DataAccess.Models;
 using DataAccess.Repositories.BookRepo;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,9 +15,11 @@ namespace Core.Services.BookService
     public class BookService
     {
         private readonly IBookRepository _bookrepository;
-        public BookService(IBookRepository bookrepository)
+        private readonly IFileUploadService _uploadservice;
+        public BookService(IBookRepository bookrepository, IFileUploadService uploadservice)
         {
             _bookrepository = bookrepository;
+            _uploadservice = uploadservice;
         }
         public async Task<IEnumerable<Book>> GetAllBooks() 
         { 
@@ -25,8 +29,21 @@ namespace Core.Services.BookService
         {
             return await _bookrepository.GetAll(where).Include(x => x.Author).ToListAsync();
         }
-        public async Task CreateBook(Book book)
+        public async Task CreateBook(BookDto bookdto)
         {
+            var book = new Book()
+            {
+                AuthorId = bookdto.AuthorId,
+                Title = bookdto.Title,
+                Description = bookdto.Description,
+                Price = bookdto.Price,
+            };
+
+            if (bookdto.Img != null)
+            {
+                book.Img = await _uploadservice.UploadFileAsync(bookdto.Img);
+            }
+
             await _bookrepository.Create(book);
         }
         public async Task UpdateBook(Book book)
