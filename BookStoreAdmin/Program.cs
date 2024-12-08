@@ -1,6 +1,8 @@
 using Core.Services.AuthorService;
+using Core.Services.BookService;
 using DataAccess.Data;
 using DataAccess.Repositories.AuthorRepo;
+using DataAccess.Repositories.BookRepo;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -15,6 +17,9 @@ builder.Services.AddDbContext<BookDbContext>(options =>
 
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<AuthorService>();
+
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<BookService>();
 
 var app = builder.Build();
 
