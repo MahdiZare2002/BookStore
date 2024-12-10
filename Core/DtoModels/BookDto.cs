@@ -17,6 +17,7 @@ namespace Core.DtoModels
         public string Description { get; set; }
         public int Price { get; set; }
         public IFormFile? Img { get; set; }
+        public string? ImgName { get; set; }
         public int AuthorId { get; set; }
         public Author? Author { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;

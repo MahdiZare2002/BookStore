@@ -81,7 +81,7 @@ namespace BookStoreAdmin.Controllers
                 return NotFound();
             }
 
-            var book = await _bookservice.GetBookById(id.Value);
+            var book = await _bookservice.GetBookDtoById(id.Value);
             if (book == null)
             {
                 return NotFound();
@@ -95,9 +95,9 @@ namespace BookStoreAdmin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Price,Img,AuthorId,Created,Updated")] Book book)
+        public async Task<IActionResult> Edit(int id, BookDto bookDto)
         {
-            if (id != book.Id)
+            if (id != bookDto.Id)
             {
                 return NotFound();
             }
@@ -106,7 +106,7 @@ namespace BookStoreAdmin.Controllers
             {
                 try
                 {
-                    await _bookservice.UpdateBook(book);
+                    await _bookservice.UpdateBook(bookDto);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -114,8 +114,8 @@ namespace BookStoreAdmin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(await _authorservice.GetAllAuthors(), "Id", "Name", book.AuthorId);
-            return View(book);
+            ViewData["AuthorId"] = new SelectList(await _authorservice.GetAllAuthors(), "Id", "Name", bookDto.AuthorId);
+            return View(bookDto);
         }
 
         // GET: Books/Delete/5
