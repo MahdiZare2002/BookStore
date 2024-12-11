@@ -37,6 +37,8 @@ namespace Core.Services.BookService
                 Title = bookdto.Title,
                 Description = bookdto.Description,
                 Price = bookdto.Price,
+                isActive = bookdto.isActive,
+                inHomePage = bookdto.inHomePage,
             };
 
             if (bookdto.Img != null)
@@ -54,6 +56,8 @@ namespace Core.Services.BookService
             book.Description = bookDto.Description;
             book.Price = bookDto.Price;
             book.AuthorId = bookDto.AuthorId;
+            book.isActive = bookDto.isActive;
+            book.inHomePage = bookDto.inHomePage;
 
             if (bookDto.Img != null)
             {

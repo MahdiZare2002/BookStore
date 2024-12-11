@@ -20,6 +20,8 @@ namespace Core.DtoModels
         public string? ImgName { get; set; }
         public int AuthorId { get; set; }
         public Author? Author { get; set; }
+        public bool? isActive { get; set; }
+        public bool? inHomePage { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;
         public DateTime Updated { get; set; } = DateTime.Now;
     }
