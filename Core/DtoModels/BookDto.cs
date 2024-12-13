@@ -19,7 +19,7 @@ namespace Core.DtoModels
         public IFormFile? Img { get; set; }
         public string? ImgName { get; set; }
         public int AuthorId { get; set; }
-        public Author? Author { get; set; }
+        public string? AuthorName { get; set; }
         public bool? isActive { get; set; }
         public bool? inHomePage { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;

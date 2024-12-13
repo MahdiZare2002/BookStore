@@ -90,5 +90,42 @@ namespace Core.Services.BookService
 
             return bookDto;
         }
+
+        public async Task<BookPagedDto> GetBooksPaginated(int page, int pageSize, string? search)
+        {
+            var books = _bookrepository.GetAll();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                books = books.Where(a => a.Title.Contains(search) || a.Description.Contains(search));
+            }
+
+            var totalCount = books.Count();
+            var totalPage = (int)Math.Ceiling((double)totalCount / pageSize);
+
+            books = books.Skip(pageSize * (page - 1)).Take(pageSize);
+
+            books.Include(a => a.Author);
+
+            var itemsDto = await books.Select(s => new BookDto()
+            {
+                Title = s.Title,
+                Price = s.Price,
+                AuthorId = s.AuthorId,
+                Description = s.Description,
+                Id = s.Id,
+                AuthorName = s.Author.Name,
+                ImgName = s.Img,
+            }).ToListAsync();
+
+            var result = new BookPagedDto()
+            {
+                Items = itemsDto,
+                TotalPage = totalPage,
+                Page = page
+            };
+
+            return result;
+        }
     }
 }
