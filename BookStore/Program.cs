@@ -1,4 +1,9 @@
+using Core.Services.AuthorService;
+using Core.Services.BookService;
+using Core.Services.FileService;
 using DataAccess.Data;
+using DataAccess.Repositories.AuthorRepo;
+using DataAccess.Repositories.BookRepo;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +14,14 @@ builder.Services.AddControllersWithViews();
 // Configure services
 builder.Services.AddDbContext<BookDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+builder.Services.AddScoped<AuthorService>();
+
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<BookService>();
+
+builder.Services.AddScoped<IFileUploadService, FileUploadService>();
 
 
 var app = builder.Build();

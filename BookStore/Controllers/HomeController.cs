@@ -1,20 +1,24 @@
-using BookStoreAdmin.Models;
+using BookStore.Models;
+using Core.Services.BookService;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace BookStoreAdmin.Controllers
+namespace BookStore.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly BookService _bookservice;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(BookService bookservice, ILogger<HomeController> logger)
         {
+            _bookservice = bookservice;
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var data = await _bookservice.GetAllBooks();
             return View();
         }
 
