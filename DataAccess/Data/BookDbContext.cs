@@ -15,5 +15,7 @@ namespace DataAccess.Data
 
         public DbSet<Author> Author { get; set; }
         public DbSet<Book> Books { get; set; }
+        public DbSet<Basket> Basket { get; set; }
+        public DbSet<BasketItems> BasketItems { get; set; }
     }
 }
