@@ -70,9 +70,28 @@ namespace Core.Services.BasketService
 
         public async Task<bool> RemoveItemBasket(int id)
         {
-            var baskets = await _basketRepository.GetAllBasketItems(a => a.Id == Id).FirstOrDefaultAsync();
+            var baskets = await _basketRepository.GetAllBasketItems(a => a.Id == id).FirstOrDefaultAsync();
             await _basketRepository.DeleteBasketItem(baskets);
             return true;
         }
+
+        public async Task<bool> Pay(string mobile, string address, int userId)
+        {
+            var basket = await _basketRepository.GetAll(a => a.UserId == userId && a.Status == DataAccess.Enums.Status.Created)
+                .FirstOrDefaultAsync();
+
+            if (basket == null)
+                return false;
+
+            basket.Mobile = mobile;
+            basket.Address = address;
+            basket.Payed = DateTime.Now;
+            basket.Status = DataAccess.Enums.Status.Final;
+
+            await _basketRepository.Update(basket);
+
+            return true;
+        }
+
     }
 }

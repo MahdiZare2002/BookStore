@@ -49,5 +49,13 @@ namespace BookStore.Controllers
             var res = await _basketService.RemoveItemBasket(model.Id);
             return Ok(new { res = true });
         }
+
+        [Authorize]
+        public async Task<IActionResult> Pay(PayDto model)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var data = await _basketService.Pay(model.mobile, model.address, Convert.ToInt32(userId));
+            return RedirectToAction("Index", "Profile");
+        }
     }
 }
