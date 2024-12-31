@@ -1,9 +1,11 @@
 using Core.Services.AuthorService;
+using Core.Services.BasketService;
 using Core.Services.BookService;
 using Core.Services.FileService;
 using DataAccess.Data;
 using DataAccess.Models;
 using DataAccess.Repositories.AuthorRepo;
+using DataAccess.Repositories.BasketRepo;
 using DataAccess.Repositories.BookRepo;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +26,9 @@ builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<BookService>();
 
 builder.Services.AddScoped<IFileUploadService, FileUploadService>();
+
+builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+builder.Services.AddScoped<BasketService>();
 
 builder.Services.AddIdentity<User, Role>(options =>
 {

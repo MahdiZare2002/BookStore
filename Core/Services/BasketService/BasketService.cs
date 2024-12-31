@@ -1,4 +1,5 @@
-﻿using DataAccess.Models;
+﻿using Core.DtoModels;
+using DataAccess.Models;
 using DataAccess.Repositories.BasketRepo;
 using DataAccess.Repositories.BookRepo;
 using Microsoft.EntityFrameworkCore;
@@ -92,6 +93,79 @@ namespace Core.Services.BasketService
 
             return true;
         }
+
+        public async Task<List<Basket>> GetUserOrders(int userId)
+        {
+            var baskets = await _basketRepository.GetAll(a => a.UserId == userId && a.Status != DataAccess.Enums.Status.Created)
+                .Include(a => a.BasketItems)
+                .ThenInclude(a => a.Book).AsNoTracking().ToListAsync();
+            return baskets;
+        }
+
+
+
+        public async Task<List<AdminOrderDto>> GetAllOrders()
+        {
+            var baskets = await _basketRepository.GetAll(a => a.Status != DataAccess.Enums.Status.Created)
+                .Include(a => a.User)
+                .Include(a => a.BasketItems)
+                .ThenInclude(a => a.Book)
+                .Select(s => new AdminOrderDto()
+                {
+                    Address = s.Address,
+                    Id = s.Id,
+                    Mobile = s.Mobile,
+                    Status = s.Status,
+                    Payed = s.Payed,
+                    UserId = s.UserId,
+                    UserName = s.User.UserName,
+                    Items = s.BasketItems.Select(c => c.Book.Title).ToList()
+                })
+                .AsNoTracking().ToListAsync();
+            return baskets;
+        }
+
+        public async Task<AdminOrderDto> GetOrderWithId(int id)
+        {
+            var baskets = await _basketRepository.GetAll(a => a.Id == id)
+                .Include(a => a.User)
+                .Include(a => a.BasketItems)
+                .ThenInclude(a => a.Book)
+                .Select(s => new AdminOrderDto()
+                {
+                    Address = s.Address,
+                    Id = s.Id,
+                    Mobile = s.Mobile,
+                    Status = s.Status,
+                    Payed = s.Payed,
+
+                    UserId = s.UserId,
+                    UserName = s.User.UserName,
+                    Items = s.BasketItems.Select(c => c.Book.Title).ToList()
+                })
+                .AsNoTracking().FirstOrDefaultAsync();
+            return baskets;
+        }
+
+
+
+        public async Task<bool> SetStatus(int Id, bool State)
+        {
+            var basket = await _basketRepository.GetAll(a => a.Id == Id).FirstOrDefaultAsync();
+            if (State)
+            {
+                basket.Status = DataAccess.Enums.Status.Accepted;
+            }
+            else
+            {
+                basket.Status = DataAccess.Enums.Status.Rejected;
+
+            }
+            await _basketRepository.Update(basket);
+
+            return true;
+        }
+
 
     }
 }
